@@ -24,36 +24,35 @@ const std::string CreateOrganizationResponse(std::string name);
 const std::string CreatePromoteResponse(bool test_mode = false);
 
 class YouTubeDataAPI : public SecureAPI,
-                       public VideoAPI
+                       public VideoAPI,
+                       public LiveAPI
 {
 
 public:
   YouTubeDataAPI();
 
-  // virtual bool        TestMode() override;
-
-  virtual bool                     is_authenticated() override;
-  virtual bool                     init()             override;
-  virtual bool                     has_videos()       override;
+  virtual bool                     is_authenticated()                                    override;
+  virtual bool                     init()                                                override;
+  virtual bool                     has_videos()                                          override;
 
   /** Analytics API **/
-          const   uint32_t         get_quota_used() const;
-          bool                     fetch_channel_data();
-          std::vector<ChannelInfo> fetch_channel_info(std::string id_string);
-          bool                     fetch_channel_videos();
-          std::vector<VideoStats>  fetch_video_stats(std::string id_string);
-          std::vector<ChannelInfo> fetch_youtube_stats();
-          std::vector<VideoInfo>   fetch_rival_videos(VideoInfo video);
-          std::vector<ChannelInfo> find_similar_videos(VideoInfo video);
+  virtual bool                     fetch_channel_data()                                  override;
+  virtual std::vector<ChannelInfo> fetch_channel_info(std::string id_string)             override;
+  virtual bool                     fetch_channel_videos()                                override;
+  virtual std::vector<VideoStats>  fetch_video_stats(std::string id_string)              override;
+  virtual std::vector<ChannelInfo> fetch_youtube_stats()                                 override;
+  virtual std::vector<VideoInfo>   fetch_rival_videos(VideoInfo video)                   override;
+  virtual std::vector<ChannelInfo> find_similar_videos(VideoInfo video)                  override;
           std::vector<VideoInfo>   get_videos();
-          std::vector<GoogleTrend> fetch_google_trends(std::vector<std::string> terms);
-          std::vector<TermInfo>    fetch_term_info(std::vector<std::string> terms);
-          std::vector<VideoInfo>   fetch_videos_by_terms(std::vector<std::string> terms);
+  virtual std::vector<GoogleTrend> fetch_google_trends(std::vector<std::string> terms)   override;
+  virtual std::vector<TermInfo>    fetch_term_info(std::vector<std::string> terms)       override;
+  virtual std::vector<VideoInfo>   fetch_videos_by_terms(std::vector<std::string> terms) override;
 
+          const   uint32_t         get_quota_used() const;
   /** Livechat API **/
-          std::string              FetchLiveVideoID();
-          bool                     FetchLiveDetails();
-          std::string              FetchChatMessages();
+  virtual std::string              FetchLiveVideoID()                                    override;
+  virtual bool                     FetchLiveDetails()                                    override;
+  virtual std::string              FetchChatMessages()                                   override;
           std::string              GetUsername() { return m_username; }
           VideoDetails             GetLiveDetails();
           LiveChatMap              GetChats();
@@ -69,7 +68,9 @@ public:
           bool                     GreetOnEntry();
           bool                     HasInteracted(std::string id, Interaction interaction);
           bool                     HasDiscussed(std::string value, Interaction type);
-          void                     RecordInteraction(std::string id, Interaction interaction, std::string value);
+          void                     RecordInteraction(std::string id,
+                                                     Interaction interaction,
+                                                     std::string value);
           void                     SetChatMap(LiveChatMap chat_map) { m_chats = chat_map; }
           void                     SetVideoDetails(VideoDetails video_details) { m_video_details = video_details; }
 

@@ -75,6 +75,7 @@ source_set("ktube_sources") {
 
   sources = [
     "//src/ktube/api/youtube.cpp",
+    "//src/ktube/api/youtube_live.cpp",
     "//src/ktube/common/constants.cpp",
     "//src/ktube/api/analysis/tools.cpp"
   ]

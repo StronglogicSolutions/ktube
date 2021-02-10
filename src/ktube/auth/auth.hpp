@@ -48,6 +48,7 @@ Authenticator() {
   auto refresh_token = reader.GetString(constants::GOOGLE_CONFIG_SECTION, constants::REFRESH_TOKEN, "");
   if (!refresh_token.empty()) {
     m_auth.refresh_token = refresh_token;
+    m_authenticated      = true;
   }
 
   auto client_id = reader.GetString(constants::GOOGLE_CONFIG_SECTION, constants::CLIENT_ID, "");
