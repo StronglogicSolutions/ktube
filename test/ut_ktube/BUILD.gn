@@ -1,0 +1,20 @@
+executable("ut_ktube") {
+
+  public_deps = [
+    "//src/ktube:ktube_sources"
+  ]
+  testonly = true
+
+  deps = [
+    "//test:gtest_main",
+    "//test:gtest_and_gmock"
+  ]
+
+  include_dirs = [
+    "//src",
+  ]
+
+  sources = [
+    "ktube.test.cpp",
+  ]
+}

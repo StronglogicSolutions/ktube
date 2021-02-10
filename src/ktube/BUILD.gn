@@ -1,0 +1,121 @@
+config("json") {
+  include_dirs = [
+    "//third_party/json/include",
+  ]
+}
+
+config("html") {
+  include_dirs = [
+    "//third_party/HtmlBuilder/include"
+  ]
+}
+
+config("cpr") {
+  include_dirs = [
+    "//third_party/cpr/include"
+  ]
+}
+
+config("knlp") {
+  include_dirs = [
+    "//third_party/knlp/src"
+  ]
+}
+
+source_set("knlp_sources") {
+  sources = [
+    "//third_party/knlp/src/nlp/nlp.cpp"
+  ]
+}
+
+config("process_executor") {
+  include_dirs = [
+    "//third_party/process_executor"
+  ]
+}
+
+config("inih") {
+  include_dirs = [
+    "//third_party/inih/cpp"
+  ]
+}
+
+source_set("ini_reader") {
+  sources = [
+    "//third_party/inih/ini.c",
+    "//third_party/inih/cpp/INIReader.cpp"
+  ]
+}
+
+source_set("ktube_sources") {
+
+  deps = [
+    ":ini_reader",
+    ":knlp_sources"
+  ]
+
+  public_configs = [
+    ":inih",
+    ":cpr",
+    ":json",
+    ":html",
+    ":knlp",
+    ":process_executor"
+  ]
+
+  include_dirs = [
+    "//src",
+  ]
+
+  libs = [
+    "crypto",
+    "cpr",
+    "curl",
+  ]
+
+  sources = [
+    "//src/ktube/api/youtube.cpp",
+    "//src/ktube/common/constants.cpp",
+    "//src/ktube/api/analysis/tools.cpp"
+  ]
+}
+
+executable("ktube") {
+  deps = [
+    ":ktube_sources"
+  ]
+
+  include_dirs = [
+    "//src",
+    "//third_party/json/include",
+  ]
+
+  libs = [
+    "pthread",
+    "crypto",
+    "cpr",
+    "curl"
+  ]
+
+  sources = [
+    "//src/ktube/main.cpp"
+  ]
+}
+
+shared_library("ktube_lib") {
+  deps = [
+    ":ktube_sources"
+  ]
+
+  include_dirs = [
+    "//src",
+    "//third_party/json/include",
+  ]
+
+  libs = [
+    "pthread",
+    "crypto",
+    "cpr",
+    "curl"
+  ]
+}
