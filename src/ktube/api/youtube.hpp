@@ -7,16 +7,14 @@
 #include <sstream>
 
 #include <INIReader.h>
+
 #include "interface.hpp"
-// #include "api/api.hpp"
 #include "nlp/nlp.hpp"
 #include "nlohmann/json.hpp"
 #include "ktube/auth/auth.hpp"
 #include "analysis/html.hpp"
 #include "analysis/tools.hpp"
-// #include "bot/youtube/types.hpp"
-// #include "util/util.hpp"
-// #include "util/process.hpp"
+
 
 using json = nlohmann::json;
 namespace ktube {
