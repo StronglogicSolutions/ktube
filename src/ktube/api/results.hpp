@@ -73,7 +73,7 @@ virtual bool read(std::string s) override {
 using json = nlohmann::json;
 using namespace constants;
   json r_json = json::parse(s, nullptr, JSON_PARSE_NO_THROW);
-  json f_json = json::parse(ReadFromFile(get_executable_cwd() + FOLLOWERS_IG_JSON), nullptr, JSON_PARSE_NO_THROW);
+  json f_json = json::parse(ReadFromFile(get_current_dir_name() + FOLLOWERS_IG_JSON), nullptr, JSON_PARSE_NO_THROW);
   json s_json{};
 
   bool file_valid = (!f_json.is_null() && f_json.is_object());
@@ -111,7 +111,7 @@ using namespace constants;
       );
     }
 
-    SaveToFile(s_json.dump(), get_executable_cwd() + FOLLOWERS_IG_JSON);
+    SaveToFile(s_json.dump(), get_current_dir_name() + FOLLOWERS_IG_JSON);
 
     return true;
   }
@@ -133,7 +133,7 @@ virtual bool read(std::string s) override {
   using namespace constants;
 
   json r_json = json::parse(s, nullptr, false);
-  json f_json = json::parse(ReadFromFile(get_executable_cwd() + FOLLOWER_JSON), nullptr, false);
+  json f_json = json::parse(ReadFromFile(get_current_dir_name() + FOLLOWER_JSON), nullptr, false);
   json s_json{};
 
   bool file_valid = (!f_json.is_null() && f_json.is_object());
@@ -205,7 +205,7 @@ virtual bool read(std::string s) override {
       }
     }
 
-    SaveToFile(s_json.dump(), get_executable_cwd() + FOLLOWER_JSON);
+    SaveToFile(s_json.dump(), get_current_dir_name() + FOLLOWER_JSON);
 
     return true;
   }
