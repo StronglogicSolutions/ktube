@@ -13,6 +13,7 @@
 
 #include <kjson.hpp>
 
+namespace ktube {
 namespace constants {
 static const char* SIMPLE_DATE_FORMAT{"%Y-%m-%dT%H:%M:%S"};
 } // namespace constants
@@ -261,4 +262,5 @@ inline std::chrono::duration<int64_t, std::nano> get_datetime_delta(std::string 
 inline std::string datetime_delta_string(std::string dt1, std::string dt2) {
   std::chrono::duration<int64_t, std::nano> datetime_delta = get_datetime_delta(dt1, dt2);
   return delta_to_string(datetime_delta);
+}
 }
