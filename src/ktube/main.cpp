@@ -6,11 +6,13 @@ int main(int argc, char** argv)
 
   ktube::YouTubeDataAPI api{};
 
-  bool has_auth = api.is_authenticated();
-
   api.init();
 
-  has_auth = api.is_authenticated();
+  bool has_auth = api.is_authenticated();
+
+  bool did_fetch = api.fetch_channel_videos();
+
+  std::vector<ktube::VideoInfo> videos = api.get_videos();
 
   return 0;
 }

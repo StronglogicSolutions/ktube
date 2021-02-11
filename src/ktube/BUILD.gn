@@ -1,6 +1,7 @@
-config("json") {
+config("kjson") {
   include_dirs = [
-    "//third_party/json/include",
+    "//third_party/kjson/",
+    "//third_party/json/include/"
   ]
 }
 
@@ -57,7 +58,7 @@ source_set("ktube_sources") {
   public_configs = [
     ":inih",
     ":cpr",
-    ":json",
+    ":kjson",
     ":html",
     ":knlp",
     ":process_executor"

@@ -6,7 +6,7 @@
 #include <string>
 #include <type_traits>
 
-#include <nlohmann/json.hpp>
+#include <kjson.hpp>
 
 #include "nlp/types.hpp"
 #include "constants.hpp"

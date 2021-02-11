@@ -11,7 +11,8 @@
 #include <fstream>
 #include <sstream>
 #include <type_traits>
-#include <nlohmann/json.hpp>
+
+#include <kjson.hpp>
 
 namespace constants {
 static const char* SIMPLE_DATE_FORMAT{"%Y-%m-%dT%H:%M:%S"};

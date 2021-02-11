@@ -1,0 +1,21 @@
+[submodule "third_party/cpr"]
+	path = third_party/cpr
+	url = https://github.com/whoshuu/cpr
+[submodule "third_party/gn"]
+	path = third_party/gn
+	url = https://gn.googlesource.com/gn
+[submodule "third_party/googletest"]
+	path = third_party/googletest
+	url = https://github.com/google/googletest
+[submodule "third_party/inih"]
+	path = third_party/inih
+	url = https://github.com/benhoyt/inih
+[submodule "third_party/json"]
+	path = third_party/json
+	url = https://github.com/nlohmann/json
+[submodule "third_party/HtmlBuilder"]
+	path = third_party/HtmlBuilder
+	url = https://github.com/adventurist/HtmlBuilder.git
+[submodule "third_party/kjson"]
+	path = third_party/kjson
+	url = https://github.com/adventurist/kjson
