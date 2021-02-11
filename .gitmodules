@@ -19,6 +19,3 @@
 [submodule "third_party/kjson"]
 	path = third_party/kjson
 	url = https://github.com/adventurist/kjson
-[submodule "gn"]
-	path = gn
-	url = https://gn.googlesource.com/gn
