@@ -25,7 +25,7 @@ class Authenticator {
 public:
 
 Authenticator() {
-  std::string cwd = get_current_dir_name();
+  std::string cwd = get_current_working_directory();
   std::string reader_path{cwd + "../" + constants::DEFAULT_CONFIG_PATH};
   INIReader   reader{reader_path};
 
