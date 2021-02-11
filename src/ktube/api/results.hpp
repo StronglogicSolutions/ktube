@@ -5,6 +5,7 @@
 #include "ktube/api/analysis/html.hpp"
 #include "ktube/common/constants.hpp"
 #include "ktube/common/types.hpp"
+#include "ktube/common/util.hpp"
 
 namespace ktube {
 class ResultInterface {
