@@ -13,9 +13,6 @@
 [submodule "third_party/json"]
 	path = third_party/json
 	url = https://github.com/nlohmann/json
-[submodule "third_party/HtmlBuilder"]
-	path = third_party/HtmlBuilder
-	url = https://github.com/adventurist/HtmlBuilder
 [submodule "third_party/kjson"]
 	path = third_party/kjson
 	url = https://github.com/adventurist/kjson
