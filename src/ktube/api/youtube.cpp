@@ -27,22 +27,22 @@ YouTubeDataAPI::YouTubeDataAPI ()
     log("Error loading config");
   }
 
-  auto username = reader.GetString(constants::YOUTUBE_CONFIG_SECTION, constants::YOUTUBE_USERNAME, "");
+  auto username = reader.GetString(constants::KTUBE_CONFIG_SECTION, constants::YOUTUBE_USERNAME, "");
   if (!username.empty()) {
     m_username = username;
   }
 
-  auto greet_on_entry = reader.GetString(constants::YOUTUBE_CONFIG_SECTION, constants::YOUTUBE_GREET, "");
+  auto greet_on_entry = reader.GetString(constants::KTUBE_CONFIG_SECTION, constants::YOUTUBE_GREET, "");
   if (!greet_on_entry.empty()) {
     m_greet_on_entry = greet_on_entry.compare("true") == 0;
   }
 
-  auto test_mode = reader.GetString(constants::YOUTUBE_CONFIG_SECTION, constants::YOUTUBE_TEST_MODE, "");
+  auto test_mode = reader.GetString(constants::KTUBE_CONFIG_SECTION, constants::YOUTUBE_TEST_MODE, "");
   if (!test_mode.empty()) {
     m_test_mode = test_mode.compare("true") == 0;
   }
 
-  auto retry_mode = reader.GetString(constants::YOUTUBE_CONFIG_SECTION, constants::YOUTUBE_RETRY_MODE, "");
+  auto retry_mode = reader.GetString(constants::KTUBE_CONFIG_SECTION, constants::YOUTUBE_RETRY_MODE, "");
   if (!retry_mode.empty()) {
     m_retry_mode = retry_mode.compare("true") == 0;
   }

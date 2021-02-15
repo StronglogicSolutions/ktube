@@ -140,12 +140,15 @@ const std::string REFRESH_TOKEN{"refresh_token"};
 const std::string CLIENT_ID{"client_id"};
 const std::string CLIENT_SECRET{"client_secret"};
 const std::string YOUTUBE_KEY{"key"};
-const std::string YOUTUBE_CONFIG_SECTION{"youtube"};
+const std::string USER_CONFIG_KEY{"username"};
+const std::string KTUBE_CONFIG_SECTION{"ktube"};
 const std::string YOUTUBE_TOKEN_APP{"token_app"};
 const std::string YOUTUBE_USERNAME{"chat_name"};
 const std::string YOUTUBE_GREET{"greet"};
 const std::string YOUTUBE_TEST_MODE{"test_mode"};
 const std::string YOUTUBE_RETRY_MODE{"retry"};
+const std::string CREDS_PATH_KEY{"credentials_path"};
+const std::string TOKENS_PATH_KEY{"token_path"};
 const std::string INSTAGRAM_CONFIG_SECTION{"instagram"};
 const std::string INSTAGRAM_USERNAME{"username"};
 

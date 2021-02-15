@@ -43,6 +43,13 @@ inline std::string system_read(std::string command) {
   return stream.str();
 }
 
+inline nlohmann::json LoadJSONFile(std::string path)
+{
+  const bool JSON_PARSE_NO_THROW{false};
+  return nlohmann::json::parse(ReadFromFile(path), nullptr, JSON_PARSE_NO_THROW);
+}
+
+
 /**
  * Poor man's log
  *

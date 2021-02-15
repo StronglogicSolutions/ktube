@@ -6,10 +6,9 @@
 #include <string>
 #include <type_traits>
 
-#include <kjson.hpp>
-
 #include "nlp/types.hpp"
 #include "constants.hpp"
+#include "util.hpp"
 
 namespace ktube {
 /**

@@ -72,8 +72,10 @@ virtual ~InstagramFollowResult() override {}
 virtual bool read(std::string s) override {
 using json = nlohmann::json;
 using namespace constants;
-  json r_json = json::parse(s, nullptr, JSON_PARSE_NO_THROW);
-  json f_json = json::parse(ReadFromFile(get_current_working_directory() + FOLLOWERS_IG_JSON), nullptr, JSON_PARSE_NO_THROW);
+using namespace kjson;
+
+  json r_json = json::parse(s, nullptr, false);
+  json f_json = json::parse(ReadFromFile(get_current_working_directory() + FOLLOWERS_IG_JSON), nullptr, false);
   json s_json{};
 
   bool file_valid = (!f_json.is_null() && f_json.is_object());

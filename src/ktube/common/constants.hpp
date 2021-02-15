@@ -15,6 +15,11 @@ extern const std::string FOLLOWER_JSON;
 extern const std::string FOLLOWERS_IG_JSON;
 extern const std::string YOUTUBE_QUOTA_PATH;
 
+// Config Keys
+extern const std::string CREDS_PATH_KEY;
+extern const std::string TOKENS_PATH_KEY;
+extern const std::string USER_CONFIG_KEY;
+
 // URL Indexes
 extern const uint8_t SEARCH_URL_INDEX;
 extern const uint8_t VIDEOS_URL_INDEX;
@@ -106,7 +111,7 @@ extern const std::vector<std::string> PARAM_VALUES;
 extern const std::string E_CHANNEL_ID;
 extern const std::string DEFAULT_CONFIG_PATH;
 extern const std::string YOUTUBE_KEY;
-extern const std::string YOUTUBE_CONFIG_SECTION;
+extern const std::string KTUBE_CONFIG_SECTION;
 extern const std::string YOUTUBE_TOKEN_APP;
 extern const std::string YOUTUBE_USERNAME;
 extern const std::string YOUTUBE_GREET;
