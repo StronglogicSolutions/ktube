@@ -11,7 +11,7 @@ struct AuthData {
   std::string refresh_token;
   std::string scope;
   std::string token_type;
-  std::string expiry_date;
+  std::string expires_in;
   std::string key;
   std::string token_app_path;
   std::string client_id;
@@ -33,7 +33,7 @@ inline bool ValidateAuthJSON(const nlohmann::json& json_file) {
     json_file.contains("access_token") &&
     json_file.contains("token_type")   &&
     json_file.contains("scope")        &&
-    json_file.contains("expiry_date")
+    json_file.contains("expires_in")
   );
 }
 
@@ -48,7 +48,7 @@ inline AuthData ParseAuthFromJSON(nlohmann::json json_file) {
     auth.token_type    = GetJSONStringValue(json_file, "token_type");
     auth.scope         = GetJSONStringValue(json_file, "scope");
     auth.key           = GetJSONStringValue(json_file, "key");
-    auth.expiry_date   = GetJSONStringValue(json_file, "expiry_date");
+    auth.expires_in    = std::to_string(GetJSONValue<uint32_t>(json_file, "expires_in"));
     auth.client_id     = GetJSONStringValue(json_file, "client_id");
     auth.client_secret = GetJSONStringValue(json_file, "client_secret");
    }
@@ -116,15 +116,16 @@ Authenticator()
     auto auth = ParseAuthFromJSON(m_tokens_json[m_username]);
 
     if (auth.is_valid()) {
-      m_auth          = auth;
-      m_authenticated = true;
+      auth.key = m_auth.key;
+    //   m_auth          = auth;
+    //   m_authenticated = true;
     }
   }
 
   auto refresh_token = config.GetString(constants::KTUBE_CONFIG_SECTION, constants::REFRESH_TOKEN, "");
   if (!refresh_token.empty()) {
     m_auth.refresh_token = refresh_token;
-    m_authenticated      = true;
+    // refresh_access_token();
   }
 }
 
@@ -151,15 +152,15 @@ bool FetchToken() {
       json auth_json = json::parse(result.output);
 
       if (!auth_json.is_null() && auth_json.is_object()) {
-        m_auth.access_token = auth_json["access_token"].dump();
-        m_auth.scope        = auth_json["scope"].dump();
-        m_auth.token_type   = auth_json["token_type"].dump();
-        m_auth.expiry_date  = auth_json["expiry_date"].dump();
+        m_auth.access_token = auth_json["access_token"];
+        m_auth.scope        = auth_json["scope"];
+        m_auth.token_type   = auth_json["token_type"];
+        m_auth.expires_in  = std::to_string(kjson::GetJSONValue<uint32_t>(auth_json, "expires_in"));
 
         m_authenticated = true;
 
         m_tokens_json[m_username] = auth_json;
-        SaveToFile(m_tokens_json, m_tokens_path);
+        SaveToFile(m_tokens_json.dump(), m_tokens_path);
 
         return true;
       }
@@ -190,10 +191,10 @@ bool refresh_access_token() {
   json response = json::parse(r.text);
 
   if (!response.is_null() && response.is_object()) {
-    m_auth.access_token = response["access_token"].dump();
-    m_auth.expiry_date  = response["expires_in"].dump();
-    m_auth.scope        = response["scope"].dump();
-    m_auth.token_type   = response["token_type"].dump();
+    m_auth.access_token = response["access_token"];
+    m_auth.expires_in  = std::to_string(kjson::GetJSONValue<uint32_t>(response, "expires_in"));
+    m_auth.scope        = response["scope"];
+    m_auth.token_type   = response["token_type"];
 
     m_authenticated = true;
 
@@ -211,7 +212,7 @@ bool is_authenticated() {
 }
 
 std::string get_token() {
-  return m_auth.access_token;
+  return "Bearer " + m_auth.access_token;
 }
 
 std::string get_key() {

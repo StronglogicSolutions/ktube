@@ -120,8 +120,7 @@ std::string to_youtube_url(const std::string& id)
     if (!live_info.is_null() && live_info.is_object()) {
       auto items = live_info["items"];
       if (!items.is_null() && items.is_array() && items.size() > 0) {
-        m_video_details.chat_id = items[0]["liveStreamingDetails"]["activeLiveChatId"].dump();
-        SanitizeJSON(m_video_details.chat_id);
+        m_video_details.chat_id = kjson::GetJSONStringValue(items[0]["liveStreamingDetails"], "activeLiveChatId");
         if (!m_video_details.chat_id.empty()) {
           m_chats.insert({m_video_details.chat_id, std::vector<LiveMessage>{}});
           log("Added chat details for " + m_video_details.chat_id);
