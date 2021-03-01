@@ -30,7 +30,7 @@ public:
   YouTubeDataAPI();
 
   virtual bool                     is_authenticated()                                    override;
-  virtual bool                     init()                                                override;
+  virtual bool                     init(const bool fetch_fresh_token = false)            override;
   virtual bool                     has_videos()                                          override;
 
   /** Analytics API **/
