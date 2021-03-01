@@ -52,7 +52,8 @@ std::string to_youtube_url(const std::string& id)
         {PARAM_NAMES.at(CHAN_ID_INDEX), PARAM_VALUES.at(CHAN_KEY_INDEX)},
         {PARAM_NAMES.at(EVENT_T_INDEX), PARAM_VALUES.at(LIVE_EVENT_TYPE_INDEX)},
         {PARAM_NAMES.at(TYPE_INDEX),    PARAM_VALUES.at(VIDEO_TYPE_INDEX)}
-      }
+      },
+      cpr::VerifySsl(0)
     );
 
     json video_info = json::parse(r.text);

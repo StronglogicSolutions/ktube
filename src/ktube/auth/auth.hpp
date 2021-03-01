@@ -27,13 +27,15 @@ bool is_valid() {
 };
 
 inline bool ValidateAuthJSON(const nlohmann::json& json_file) {
+  auto json_str = json_file.dump();
+
+  ktube::log("Auth JSON is\n" + json_str);
   return(
     !json_file.is_null()               &&
     json_file.is_object()              &&
     json_file.contains("access_token") &&
     json_file.contains("token_type")   &&
-    json_file.contains("scope")        &&
-    json_file.contains("expires_in")
+    json_file.contains("scope")
   );
 }
 
@@ -112,12 +114,16 @@ Authenticator()
   else
     throw std::runtime_error{"Must provide a path to store tokens JSON"};
 
+  auto tokens_str = m_tokens_json.dump();
+  ktube::log("Tokens are:\n" + tokens_str);
+
   if (m_tokens_json.contains(m_username) && !m_tokens_json[m_username].is_null()) {
     auto auth = ParseAuthFromJSON(m_tokens_json[m_username]);
 
     if (auth.is_valid()) {
-      auth.key = m_auth.key;
-    //   m_auth          = auth;
+      m_auth.access_token = auth.access_token;
+      m_auth.scope        = auth.scope;
+      m_auth.token_type   = auth.token_type;
     //   m_authenticated = true;
     }
   }
@@ -134,14 +140,14 @@ Authenticator()
  *
  * @returns [out] {bool}
  */
-bool FetchToken() {
+bool FetchToken(const bool fetch_fresh_token = false) {
   using json = nlohmann::json;
 
   // Attempt to refresh token
-  if (!m_auth.refresh_token.empty()) {
-    if (refresh_access_token())
-      return true;
-  }
+//  if (!fetch_fresh_token && !m_auth.refresh_token.empty()) {
+//    if (refresh_access_token())
+//      return true;
+//  }
 
   // Attempt to fetch a fresh token
   if (!m_auth.token_app_path.empty()) {
@@ -230,3 +236,4 @@ json         m_tokens_json;
 };
 
 } // namespace ktube
+
