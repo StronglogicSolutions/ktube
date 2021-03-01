@@ -66,9 +66,9 @@ bool YouTubeDataAPI::is_authenticated()
  * @return true
  * @return false
  */
-bool YouTubeDataAPI::init()
+bool YouTubeDataAPI::init(const bool fetch_fresh_token)
 {
-  return m_authenticator.FetchToken();
+  return m_authenticator.FetchToken(fetch_fresh_token);
 }
 
 bool YouTubeDataAPI::fetch_channel_data() {
@@ -118,7 +118,8 @@ bool YouTubeDataAPI::fetch_channel_videos()
           {PARAM_NAMES.at(TYPE_INDEX),       PARAM_VALUES.at(VIDEO_TYPE_INDEX)}, // type
           {PARAM_NAMES.at(ORDER_INDEX),      PARAM_VALUES.at(DATE_VALUE_INDEX)}, // order by
           {PARAM_NAMES.at(MAX_RESULT_INDEX), std::to_string(5)}                  // limit
-        }
+        },
+        cpr::VerifySsl{m_authenticator.verify_ssl()}
       );
 
       m_quota += youtube::QUOTA_LIMIT.at(youtube::SEARCH_LIST_QUOTA_INDEX);
@@ -189,7 +190,8 @@ std::vector<VideoStats> YouTubeDataAPI::fetch_video_stats(std::string id_string)
       {PARAM_NAMES.at(PART_INDEX),    VideoParamsFull()},
       {PARAM_NAMES.at(KEY_INDEX),     m_authenticator.get_key()},
       {PARAM_NAMES.at(ID_INDEX),      id_string}
-    }
+    },
+    cpr::VerifySsl{m_authenticator.verify_ssl()}
   );
 
   m_quota += youtube::QUOTA_LIMIT.at(youtube::VIDEO_LIST_QUOTA_INDEX);
@@ -296,7 +298,8 @@ std::vector<VideoInfo> YouTubeDataAPI::fetch_rival_videos(VideoInfo video)
       {PARAM_NAMES.at(TYPE_INDEX),       PARAM_VALUES.at(VIDEO_TYPE_INDEX)}, // type
       {PARAM_NAMES.at(ORDER_INDEX),      PARAM_VALUES.at(VIEW_COUNT_INDEX)}, // order by
       {PARAM_NAMES.at(MAX_RESULT_INDEX), std::to_string(5)}                  // limit
-    }
+    },
+    cpr::VerifySsl{m_authenticator.verify_ssl()}
   );
 
   m_quota += youtube::QUOTA_LIMIT.at(youtube::SEARCH_LIST_QUOTA_INDEX);
@@ -472,7 +475,8 @@ std::vector<VideoInfo> YouTubeDataAPI::fetch_videos_by_terms(std::vector<std::st
       {PARAM_NAMES.at(TYPE_INDEX),           PARAM_VALUES.at(VIDEO_TYPE_INDEX)}, // type
       {PARAM_NAMES.at(ORDER_INDEX),          PARAM_VALUES.at(VIEW_COUNT_INDEX)}, // order by
       {PARAM_NAMES.at(MAX_RESULT_INDEX),     std::to_string(5)}                  // limit
-    }
+    },
+    cpr::VerifySsl{m_authenticator.verify_ssl()}
   );
 
   m_quota += youtube::QUOTA_LIMIT.at(youtube::SEARCH_LIST_QUOTA_INDEX);
@@ -588,7 +592,8 @@ std::vector<ChannelInfo> YouTubeDataAPI::fetch_channel_info(std::string id_strin
       {PARAM_NAMES.at(TYPE_INDEX),           PARAM_VALUES.at(VIDEO_TYPE_INDEX)},    // type
       {PARAM_NAMES.at(ORDER_INDEX),          PARAM_VALUES.at(VIEW_COUNT_INDEX)},    // order by
       {PARAM_NAMES.at(MAX_RESULT_INDEX),     std::to_string(5)}                     // limit
-    }
+    },
+    cpr::VerifySsl{m_authenticator.verify_ssl()}
   );
 
   m_quota += youtube::QUOTA_LIMIT.at(youtube::SEARCH_LIST_QUOTA_INDEX);
