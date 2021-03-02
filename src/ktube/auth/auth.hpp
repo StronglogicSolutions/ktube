@@ -117,7 +117,7 @@ Authenticator()
   else
     throw std::runtime_error{"Must provide a path to store tokens JSON"};
 
-  auto tokens_str = m_tokens_json.get<std::string>();
+  auto tokens_str = m_tokens_json.dump();
   ktube::log("Tokens are:\n" + tokens_str);
   if (m_tokens_json.contains(m_username) && !m_tokens_json[m_username].is_null()) {
     auto auth = ParseAuthFromJSON(m_tokens_json[m_username]);
