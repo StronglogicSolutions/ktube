@@ -29,6 +29,12 @@ virtual std::vector<TermInfo>    fetch_term_info(std::vector<std::string> terms)
 virtual std::vector<VideoInfo>   fetch_videos_by_terms(std::vector<std::string> terms) = 0;
 };
 
+class CommentAPI {
+public:
+virtual ~CommentAPI() {}
+virtual std::vector<Comment>     FetchVideoComments(const std::string& id) = 0;
+};
+
 class LiveAPI {
 public:
 virtual ~LiveAPI() {}
