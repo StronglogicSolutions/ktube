@@ -23,7 +23,8 @@ const std::string CreatePromoteResponse(bool test_mode = false);
 
 class YouTubeDataAPI : public SecureAPI,
                        public VideoAPI,
-                       public LiveAPI
+                       public LiveAPI,
+                       public CommentAPI
 {
 
 public:
@@ -71,6 +72,11 @@ public:
                                                      std::string value);
           void                     SetChatMap(LiveChatMap chat_map) { m_chats = chat_map; }
           void                     SetVideoDetails(VideoDetails video_details) { m_video_details = video_details; }
+/**
+ * Comment API
+ *
+ */
+virtual   std::vector<Comment>     FetchVideoComments(const std::string& id) override;
 
 protected:
 LiveChatMap  m_chats;
