@@ -2,30 +2,34 @@
 #include "ktube/common/constants.hpp"
 
 namespace ktube {
-
+/**
+ * @brief FetchVideoComments
+ *
+ * @param   [in]  {std::string} id
+ * @param   [in]  {bool}        fetch_all       (optional)
+ * @param   [in]  {bool}        include_replies (optional)
+ * @returns [out]  std::vector<Comment>
+ */
 std::vector<Comment> YouTubeDataAPI::FetchVideoComments(const std::string& id)
 {
   using namespace constants;
 
-  const std::string URL = URL_VALUES.at(COMMENT_THREADS_URL_INDEX);
-
-  cpr::Response r = cpr::Get(
-    cpr::Url(URL),
+  RequestResponse response{cpr::Get(
+    cpr::Url(URL_VALUES.at(COMMENT_THREADS_URL_INDEX)),
     cpr::Header{
       {HEADER_NAMES.at(ACCEPT_HEADER_INDEX), HEADER_VALUES.at(APP_JSON_INDEX)},
-      {HEADER_NAMES.at(AUTH_HEADER_INDEX),   m_authenticator.get_token()}},
+      {HEADER_NAMES.at(AUTH_HEADER_INDEX),   m_authenticator.get_token()     }
+    },
     cpr::Parameters{
-      {PARAM_NAMES.at(PART_INDEX),       PARAM_VALUES.at(SNIPPET_INDEX)},    // snippet
-      {PARAM_NAMES.at(VIDEO_ID_INDEX),   id},
+      {PARAM_NAMES.at(PART_INDEX),       PARAM_VALUES.at(SNIPPET_INDEX)},
+      {PARAM_NAMES.at(VIDEO_ID_INDEX),   id                            },
     }
-  );
+  )};
 
-  if (r.error.code == cpr::ErrorCode::OK)
-  {
-    // TODO: parse
-  }
+  if (response.error)
+    log("Error response from server:\n" + response.GetError()); // Container will be empty
 
-  return std::vector<Comment>{};
+  return ParseComments(response.json());
 }
 
 } // namespace ktube
