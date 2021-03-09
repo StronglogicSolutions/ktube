@@ -19,8 +19,29 @@ namespace ktube {
 
 struct Comment {
 std::string id;
+std::string video_id;
 std::string text;
+std::string name;
+std::string channel;
+uint32_t    likes;
+std::string time;
+// uint32_t totalReplyCount
+// std::string updatedAt ||
+// std::string authorProfileImageUrl
 std::string parent_id;
+
+friend std::ostream& operator<<(std::ostream& o, const Comment& c)
+{
+  o << "ID: "       << c.id                    << "\n" <<
+       "VIDEO_ID: " << c.video_id              << "\n" <<
+       "TEXT: "     << c.text                  << "\n" <<
+       "NAME: "     << c.name                  << "\n" <<
+       "CHANNEL: "  << c.channel               << "\n" <<
+       "LIKES: "    << std::to_string(c.likes) << "\n" <<
+       "TIME: "     << c.time                  << std::endl;
+
+  return o;
+}
 };
 
 struct FollowerCount {
