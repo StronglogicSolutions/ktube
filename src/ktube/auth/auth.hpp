@@ -1,9 +1,7 @@
 #pragma once
 
 #include "ktube/common/youtube_util.hpp"
-
-#include <INIReader.h>
-#include <cpr/cpr.h>
+#include "ktube/common/request.hpp"
 
 namespace ktube {
 struct AuthData {
@@ -32,8 +30,7 @@ inline bool ValidateAuthJSON(const nlohmann::json& json_file) {
     json_file.is_object()              &&
     json_file.contains("access_token") &&
     json_file.contains("token_type")   &&
-    json_file.contains("scope")        &&
-    json_file.contains("expires_in")
+    json_file.contains("scope")
   );
 }
 
@@ -48,7 +45,9 @@ inline AuthData ParseAuthFromJSON(nlohmann::json json_file) {
     auth.token_type    = GetJSONStringValue(json_file, "token_type");
     auth.scope         = GetJSONStringValue(json_file, "scope");
     auth.key           = GetJSONStringValue(json_file, "key");
-    auth.expires_in    = std::to_string(GetJSONValue<uint32_t>(json_file, "expires_in"));
+    auth.expires_in    = json_file.contains("expires_in") ?
+                           std::to_string(GetJSONValue<uint32_t>(json_file, "expires_in")) :
+                           std::to_string(GetJSONValue<uint32_t>(json_file, "expiry_date"));
     auth.client_id     = GetJSONStringValue(json_file, "client_id");
     auth.client_secret = GetJSONStringValue(json_file, "client_secret");
    }
@@ -67,7 +66,8 @@ public:
 
 Authenticator()
 : m_authenticated{false},
-  m_tokens_json{nullptr}
+  m_tokens_json{nullptr},
+  m_verify_ssl{true}
 {
   auto type = m_tokens_json.type();
   auto config = GetConfigReader();
@@ -80,6 +80,11 @@ Authenticator()
   auto app_path = config.GetString(constants::KTUBE_CONFIG_SECTION, constants::YOUTUBE_TOKEN_APP, "");
   if (!app_path.empty()) {
     m_auth.token_app_path = app_path;
+  }
+
+  auto verify_ssl = config.GetString(constants::KTUBE_CONFIG_SECTION, constants::VERIFY_SSL_KEY, "true");
+  if (!verify_ssl.empty()) {
+    m_verify_ssl = (verify_ssl == "true");
   }
 
   auto youtube_key = config.GetString(constants::KTUBE_CONFIG_SECTION, constants::YOUTUBE_KEY, "");
@@ -116,16 +121,15 @@ Authenticator()
     auto auth = ParseAuthFromJSON(m_tokens_json[m_username]);
 
     if (auth.is_valid()) {
-      auth.key = m_auth.key;
-    //   m_auth          = auth;
-    //   m_authenticated = true;
+      m_auth.access_token = auth.access_token;
+      m_auth.scope        = auth.scope;
+      m_auth.token_type   = auth.token_type;
     }
   }
 
   auto refresh_token = config.GetString(constants::KTUBE_CONFIG_SECTION, constants::REFRESH_TOKEN, "");
   if (!refresh_token.empty()) {
     m_auth.refresh_token = refresh_token;
-    // refresh_access_token();
   }
 }
 
@@ -134,11 +138,11 @@ Authenticator()
  *
  * @returns [out] {bool}
  */
-bool FetchToken() {
+bool FetchToken(const bool fetch_fresh_token = false) {
   using json = nlohmann::json;
 
   // Attempt to refresh token
-  if (!m_auth.refresh_token.empty()) {
+  if (!fetch_fresh_token && !m_auth.refresh_token.empty()) {
     if (refresh_access_token())
       return true;
   }
@@ -149,13 +153,14 @@ bool FetchToken() {
     ProcessResult result = qx({m_auth.token_app_path});
 
     if (!result.error) {
-      json auth_json = json::parse(result.output);
+      auto auth_json = json::parse(result.output, nullptr, false);
+      auto auth = ParseAuthFromJSON(auth_json);
 
-      if (!auth_json.is_null() && auth_json.is_object()) {
-        m_auth.access_token = auth_json["access_token"];
-        m_auth.scope        = auth_json["scope"];
-        m_auth.token_type   = auth_json["token_type"];
-        m_auth.expires_in  = std::to_string(kjson::GetJSONValue<uint32_t>(auth_json, "expires_in"));
+      if (auth.is_valid()) {
+        m_auth.access_token = auth.access_token;
+        m_auth.scope        = auth.scope;
+        m_auth.token_type   = auth.token_type;
+        m_auth.expires_in   = auth.expires_in;
 
         m_authenticated = true;
 
@@ -173,7 +178,7 @@ bool refresh_access_token() {
   using namespace constants;
   using json = nlohmann::json;
 
-  cpr::Response r = cpr::Post(
+  RequestResponse response{cpr::Post(
     cpr::Url{URL_VALUES.at(GOOGLE_AUTH_URL_INDEX)},
     cpr::Header{
       {HEADER_NAMES.at(CONTENT_TYPE_INDEX), HEADER_VALUES.at(FORM_URL_ENC_INDEX)}
@@ -185,23 +190,31 @@ bool refresh_access_token() {
         PARAM_NAMES.at(REFRESH_TOKEN_NAME_INDEX) + "=" + m_auth.refresh_token + "&" +
         PARAM_NAMES.at(GRANT_TYPE_INDEX)         + "=" + PARAM_VALUES.at(REFRESH_TOKEN_VALUE_INDEX)
       }
+    },
+    cpr::VerifySsl{m_verify_ssl}
+  )};
+
+  if (!response.error)
+  {
+    auto     auth_json = response.json();
+    AuthData auth      = ParseAuthFromJSON(auth_json);
+
+    if (auth.is_valid()) {
+      m_auth.access_token       = auth.access_token;
+      m_auth.expires_in         = auth.expires_in;
+      m_auth.scope              = auth.scope;
+      m_auth.token_type         = m_auth.token_type;
+      m_tokens_json[m_username] = auth_json;
+      m_authenticated           = true;
+
+      SaveToFile(m_tokens_json.dump(), m_tokens_path);
+
+      return true;
     }
-  );
-
-  json response = json::parse(r.text);
-
-  if (!response.is_null() && response.is_object()) {
-    m_auth.access_token = response["access_token"];
-    m_auth.expires_in  = std::to_string(kjson::GetJSONValue<uint32_t>(response, "expires_in"));
-    m_auth.scope        = response["scope"];
-    m_auth.token_type   = response["token_type"];
-
-    m_authenticated = true;
-
-    m_tokens_json[m_username] = response;
-    SaveToFile(m_tokens_json.dump(), m_tokens_path);
-
-    return true;
+  }
+  else
+  {
+    ktube::log("Failed to refresh access token. Error:\n" + response.GetError());
   }
 
   return false;
@@ -209,6 +222,10 @@ bool refresh_access_token() {
 
 bool is_authenticated() {
   return m_authenticated;
+}
+
+bool verify_ssl() {
+  return m_verify_ssl;
 }
 
 std::string get_token() {
@@ -227,6 +244,7 @@ bool         m_authenticated;
 std::string  m_username;
 std::string  m_tokens_path;
 json         m_tokens_json;
+bool         m_verify_ssl;
 };
 
 } // namespace ktube

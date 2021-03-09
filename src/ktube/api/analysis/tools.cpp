@@ -9,7 +9,7 @@ ProcessResult execute(std::string program, std::vector<std::string> argv) {
   runtime_arguments.reserve(1 + argv.size());
   runtime_arguments.emplace_back(program);
   runtime_arguments.insert(runtime_arguments.end(), argv.begin(), argv.end());
-  return qx(runtime_arguments, get_current_working_directory());
+  return qx(runtime_arguments, get_executable_cwd());
 }
 
 /**

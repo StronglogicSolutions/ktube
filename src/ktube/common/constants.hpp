@@ -112,6 +112,7 @@ extern const std::string E_CHANNEL_ID;
 extern const std::string DEFAULT_CONFIG_PATH;
 extern const std::string YOUTUBE_KEY;
 extern const std::string KTUBE_CONFIG_SECTION;
+extern const std::string VERIFY_SSL_KEY;
 extern const std::string YOUTUBE_TOKEN_APP;
 extern const std::string YOUTUBE_USERNAME;
 extern const std::string YOUTUBE_GREET;

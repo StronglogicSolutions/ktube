@@ -6,6 +6,7 @@
 #include "ktube/common/constants.hpp"
 #include "ktube/common/types.hpp"
 #include "ktube/common/util.hpp"
+#include "ktube/common/youtube_util.hpp"
 
 namespace ktube {
 class ResultInterface {
@@ -75,7 +76,7 @@ using namespace constants;
 using namespace kjson;
 
   json r_json = json::parse(s, nullptr, false);
-  json f_json = json::parse(ReadFromFile(get_current_working_directory() + FOLLOWERS_IG_JSON), nullptr, false);
+  json f_json = json::parse(ReadFromFile(ktube::get_executable_cwd() + FOLLOWERS_IG_JSON), nullptr, false);
   json s_json{};
 
   bool file_valid = (!f_json.is_null() && f_json.is_object());
@@ -113,7 +114,7 @@ using namespace kjson;
       );
     }
 
-    SaveToFile(s_json.dump(), get_current_working_directory() + FOLLOWERS_IG_JSON);
+    SaveToFile(s_json.dump(), ktube::get_executable_cwd() + FOLLOWERS_IG_JSON);
 
     return true;
   }
@@ -135,7 +136,7 @@ virtual bool read(std::string s) override {
   using namespace constants;
 
   json r_json = json::parse(s, nullptr, false);
-  json f_json = json::parse(ReadFromFile(get_current_working_directory() + FOLLOWER_JSON), nullptr, false);
+  json f_json = json::parse(ReadFromFile(ktube::get_executable_cwd() + FOLLOWER_JSON), nullptr, false);
   json s_json{};
 
   bool file_valid = (!f_json.is_null() && f_json.is_object());
@@ -207,7 +208,7 @@ virtual bool read(std::string s) override {
       }
     }
 
-    SaveToFile(s_json.dump(), get_current_working_directory() + FOLLOWER_JSON);
+    SaveToFile(s_json.dump(), ktube::get_executable_cwd() + FOLLOWER_JSON);
 
     return true;
   }

@@ -142,6 +142,7 @@ const std::string CLIENT_SECRET{"client_secret"};
 const std::string YOUTUBE_KEY{"key"};
 const std::string USER_CONFIG_KEY{"username"};
 const std::string KTUBE_CONFIG_SECTION{"ktube"};
+const std::string VERIFY_SSL_KEY{"verify_ssl"};
 const std::string YOUTUBE_TOKEN_APP{"token_app"};
 const std::string YOUTUBE_USERNAME{"chat_name"};
 const std::string YOUTUBE_GREET{"greet"};

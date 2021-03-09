@@ -7,8 +7,8 @@ class SecureAPI {
 public:
 virtual ~SecureAPI() {}
 
-virtual bool is_authenticated() = 0;
-virtual bool init()             = 0;
+virtual bool is_authenticated()                 = 0;
+virtual bool init(const bool fetch_fresh_token) = 0;
 };
 
 class VideoAPI {
