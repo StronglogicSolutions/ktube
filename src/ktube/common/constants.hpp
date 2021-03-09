@@ -26,6 +26,7 @@ extern const uint8_t VIDEOS_URL_INDEX;
 extern const uint8_t LIVE_CHAT_URL_INDEX;
 extern const uint8_t GOOGLE_AUTH_URL_INDEX;
 extern const uint8_t CHANNELS_URL_INDEX;
+extern const uint8_t COMMENT_THREADS_URL_INDEX;
 
 // Header Name Indexes
 extern const uint8_t ACCEPT_HEADER_INDEX;
@@ -51,6 +52,7 @@ extern const uint8_t GRANT_TYPE_INDEX;
 extern const uint8_t ORDER_INDEX;
 extern const uint8_t MAX_RESULT_INDEX;
 extern const uint8_t QUERY_INDEX;
+extern const uint8_t VIDEO_ID_INDEX;
 
 // Param Value Indexes
 extern const uint8_t CHAN_KEY_INDEX;
