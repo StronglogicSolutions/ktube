@@ -17,6 +17,12 @@ namespace ktube {
   └───────────────────────────────────────────────────────────┘
 */
 
+struct Comment {
+std::string id;
+std::string text;
+std::string parent_id;
+};
+
 struct FollowerCount {
 std::string name;
 std::string platform;
