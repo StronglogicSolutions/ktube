@@ -17,7 +17,7 @@ const uint8_t LIVE_CHAT_URL_INDEX        = 0x02;
 const uint8_t GOOGLE_AUTH_URL_INDEX      = 0x03;
 const uint8_t CHANNELS_URL_INDEX         = 0x04;
 const uint8_t COMMENT_THREADS_URL_INDEX  = 0x05;
-const uint8_t COMMENT_POST_URL_INDEX     = 0x06;
+const uint8_t COMMENT_REPLY_URL_INDEX    = 0x06;
 
 // Header Name Indexes
 const uint8_t ACCEPT_HEADER_INDEX        = 0x00;
@@ -34,7 +34,7 @@ const uint8_t CHAN_ID_INDEX              = 0x01;
 const uint8_t EVENT_T_INDEX              = 0x02;
 const uint8_t TYPE_INDEX                 = 0x03;
 const uint8_t KEY_INDEX                  = 0x04;
-const uint8_t ID_INDEX              = 0x05;
+const uint8_t ID_INDEX                   = 0x05;
 const uint8_t LIVE_CHAT_ID_INDEX         = 0x06;
 const uint8_t CLIENT_ID_INDEX            = 0x07;
 const uint8_t CLIENT_SECRET_INDEX        = 0x08;

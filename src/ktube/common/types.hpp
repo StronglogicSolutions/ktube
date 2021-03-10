@@ -30,11 +30,20 @@ std::string time;
 // std::string authorProfileImageUrl
 std::string parent_id;
 
-const std::string postdata() const
+const std::string postdata(const bool reply = true) const
 {
-  return
-    std::string{"{\"snippet\": { \"textOriginal\":\"" + text + "\",\"parentId\": \"" + parent_id + "\"}}"};
+  nlohmann::json payload{};
+  payload["snippet"]["videoId"]      = video_id;
 
+  if (reply)
+  {
+    payload["snippet"]["textOriginal"] = text;
+    payload["snippet"]["parentId"]     = parent_id;
+  }
+  else
+    payload["snippet"]["topLevelComment"]["snippet"]["textOriginal"] = text;
+
+  return payload.dump();
 }
 
 friend std::ostream& operator<<(std::ostream& o, const Comment& c)
@@ -90,7 +99,7 @@ double                   keyword_score;
  *
  * TODO: consider wrapping as a class with an ID
  */
-struct VideoInfo {
+struct Video {
 std::string              channel_id;
 std::string              id;
 std::string              title;
@@ -114,7 +123,7 @@ std::vector<std::string> get_primary_keywords() {
     };
 }
 
-friend std::ostream &operator<<(std::ostream& o, const VideoInfo& v) {
+friend std::ostream &operator<<(std::ostream& o, const Video& v) {
   o << "Channel ID:  " << v.channel_id     << "\n" <<
        "Video ID:    " << v.id             << "\n" <<
        "Title:       " << v.title          << "\n" <<
@@ -157,7 +166,7 @@ std::string            created;
 std::string            thumb_url;
 ChannelStats           stats;
 std::string            id;
-std::vector<VideoInfo> videos;
+std::vector<Video> videos;
 
 friend std::ostream &operator<<(std::ostream& o, const ChannelInfo& c) {
   o << "ID:          " << c.id     << "\n" <<
