@@ -30,6 +30,13 @@ std::string time;
 // std::string authorProfileImageUrl
 std::string parent_id;
 
+const std::string postdata() const
+{
+  return
+    std::string{"{\"snippet\": { \"textOriginal\":\"" + text + "\",\"parentId\": \"" + parent_id + "\"}}"};
+
+}
+
 friend std::ostream& operator<<(std::ostream& o, const Comment& c)
 {
   o << "ID: "       << c.id                    << "\n" <<
