@@ -50,7 +50,7 @@ const VideoStudy::VideoStudyResult VideoStudy::analyze() {
   VideoStudyResult result{};
 
   std::for_each(m_videos.begin(), m_videos.end(),
-    [this](VideoInfo& video) {
+    [this](Video& video) {
       std::vector<std::string> keywords{};
       if (!video.stats.keywords.empty()) {
         if (video.stats.keywords.size() > 3) {
@@ -90,7 +90,7 @@ const VideoStudy::Videos::const_iterator VideoStudy::most_liked() const {
   return std::max_element(
     m_videos.begin(),
     m_videos.end(),
-    [](const VideoInfo& a, const VideoInfo& b) {
+    [](const Video& a, const Video& b) {
       return std::stoi(a.stats.likes) < std::stoi(b.stats.likes);
     }
   );
@@ -105,7 +105,7 @@ const VideoStudy::Videos::const_iterator VideoStudy::most_controversial() const 
   return std::max_element(
     m_videos.begin(),
     m_videos.end(),
-    [](const VideoInfo& a, const VideoInfo& b) {
+    [](const Video& a, const Video& b) {
       return std::stoi(a.stats.dislikes) < std::stoi(b.stats.dislikes);
     }
   );
@@ -120,7 +120,7 @@ const VideoStudy::Videos::const_iterator VideoStudy::top_view_score() const {
   return std::max_element(
     m_videos.begin(),
     m_videos.end(),
-    [](const VideoInfo& a, const VideoInfo& b) {
+    [](const Video& a, const Video& b) {
       return a.stats.view_score < b.stats.view_score;
     }
   );
@@ -135,7 +135,7 @@ const VideoStudy::Videos::const_iterator VideoStudy::top_like_score() const {
   return std::max_element(
     m_videos.begin(),
     m_videos.end(),
-    [](const VideoInfo& a, const VideoInfo& b) {
+    [](const Video& a, const Video& b) {
       return a.stats.like_score < b.stats.like_score;
     }
   );
@@ -150,7 +150,7 @@ const VideoStudy::Videos::const_iterator VideoStudy::top_dislike_score() const {
   return std::max_element(
     m_videos.begin(),
     m_videos.end(),
-    [](const VideoInfo& a, const VideoInfo& b) {
+    [](const Video& a, const Video& b) {
       return a.stats.dislike_score < b.stats.dislike_score;
     }
   );
@@ -165,7 +165,7 @@ const VideoStudy::Videos::const_iterator VideoStudy::top_comment_score() const {
   return std::max_element(
     m_videos.begin(),
     m_videos.end(),
-    [](const VideoInfo& a, const VideoInfo& b) {
+    [](const Video& a, const Video& b) {
       return a.stats.comment_score < b.stats.comment_score;
     }
   );
@@ -184,7 +184,7 @@ VideoStudy::Videos VideoStudy::get_videos() { return m_videos; }
  * @param   [in]  {VideoInfo}
  * @returns [out] {double}
  */
-double VideoStudy::compute_view_score(VideoInfo v) {
+double VideoStudy::compute_view_score(Video v) {
   int     views   = std::stoi(v.stats.views);
 
   int64_t delta_t = std::chrono::duration_cast<std::chrono::minutes>(
@@ -201,7 +201,7 @@ double VideoStudy::compute_view_score(VideoInfo v) {
  * @param   [in]  {VideoInfo}
  * @returns [out] {double}
  */
-double VideoStudy::compute_like_score(VideoInfo v) {
+double VideoStudy::compute_like_score(Video v) {
   return static_cast<double>(std::stof(v.stats.likes) / std::stof(v.stats.views));
 }
 
@@ -211,7 +211,7 @@ double VideoStudy::compute_like_score(VideoInfo v) {
  * @param   [in]  {VideoInfo}
  * @returns [out] {double}
  */
-double VideoStudy::compute_dislike_score(VideoInfo v) {
+double VideoStudy::compute_dislike_score(Video v) {
   return static_cast<double>(std::stof(v.stats.dislikes) / std::stof(v.stats.views));
 }
 
@@ -221,7 +221,7 @@ double VideoStudy::compute_dislike_score(VideoInfo v) {
  * @param   [in]  {VideoInfo}
  * @returns [out] {double}
  */
-double VideoStudy::compute_comment_score(VideoInfo v) {
+double VideoStudy::compute_comment_score(Video v) {
   return static_cast<double>(std::stof(v.stats.comments) / std::stof(v.stats.views));
 }
 
