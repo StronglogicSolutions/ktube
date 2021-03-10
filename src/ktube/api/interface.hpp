@@ -33,6 +33,8 @@ class CommentAPI {
 public:
 virtual ~CommentAPI() {}
 virtual std::vector<Comment>     FetchVideoComments(const std::string& id) = 0;
+// virtual bool                     PostCommentReply(const Comment& comment) = 0;
+virtual bool                     PostCommentReply(const Comment& comment) = 0;
 };
 
 class LiveAPI {
