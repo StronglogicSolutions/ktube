@@ -17,6 +17,7 @@ const uint8_t LIVE_CHAT_URL_INDEX        = 0x02;
 const uint8_t GOOGLE_AUTH_URL_INDEX      = 0x03;
 const uint8_t CHANNELS_URL_INDEX         = 0x04;
 const uint8_t COMMENT_THREADS_URL_INDEX  = 0x05;
+const uint8_t COMMENT_POST_URL_INDEX     = 0x06;
 
 // Header Name Indexes
 const uint8_t ACCEPT_HEADER_INDEX        = 0x00;
@@ -68,7 +69,8 @@ const std::vector<std::string> URL_VALUES{
   "https://www.googleapis.com/youtube/v3/liveChat/messages",
   "https://oauth2.googleapis.com/token",
   "https://www.googleapis.com/youtube/v3/channels",
-  "https://www.googleapis.com/youtube/v3/commentThreads"
+  "https://www.googleapis.com/youtube/v3/commentThreads",
+  "https://www.googleapis.com/youtube/v3/comments"
 };
 
 const std::vector<std::string> HEADER_NAMES{

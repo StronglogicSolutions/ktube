@@ -27,6 +27,7 @@ extern const uint8_t LIVE_CHAT_URL_INDEX;
 extern const uint8_t GOOGLE_AUTH_URL_INDEX;
 extern const uint8_t CHANNELS_URL_INDEX;
 extern const uint8_t COMMENT_THREADS_URL_INDEX;
+extern const uint8_t COMMENT_POST_URL_INDEX;
 
 // Header Name Indexes
 extern const uint8_t ACCEPT_HEADER_INDEX;
