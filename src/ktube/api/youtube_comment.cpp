@@ -32,4 +32,30 @@ std::vector<Comment> YouTubeDataAPI::FetchVideoComments(const std::string& id)
   return ParseComments(response.json());
 }
 
+bool YouTubeDataAPI::PostCommentReply(const Comment& comment)
+{
+  using namespace constants;
+
+  RequestResponse response{cpr::Post(
+    cpr::Url(URL_VALUES.at(COMMENT_POST_URL_INDEX)),
+    cpr::Header{
+      {HEADER_NAMES.at(ACCEPT_HEADER_INDEX), HEADER_VALUES.at(APP_JSON_INDEX)},
+      {HEADER_NAMES.at(CONTENT_TYPE_INDEX),  HEADER_VALUES.at(APP_JSON_INDEX)},
+      {HEADER_NAMES.at(AUTH_HEADER_INDEX),   m_authenticator.get_token()     }
+    },
+    cpr::Parameters{
+      {PARAM_NAMES.at(PART_INDEX),       PARAM_VALUES.at(SNIPPET_INDEX)}
+    },
+    cpr::Body{comment.postdata()}
+  )};
+
+  if (response.error)
+  {
+    log("Error response from server:\n" + response.GetError()); // Container will be empty
+    return false;
+  }
+
+  return true;
+}
+
 } // namespace ktube
