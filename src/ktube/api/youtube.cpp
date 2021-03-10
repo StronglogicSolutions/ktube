@@ -104,7 +104,7 @@ bool YouTubeDataAPI::fetch_channel_videos()
   // TODO: Replace below with standard for loop?
   for (ChannelInfo& channel : m_channels)
     {
-      std::vector<VideoInfo> info_v{};
+      std::vector<Video> info_v{};
 
       cpr::Response r = cpr::Get(
         cpr::Url{URL_VALUES.at(SEARCH_URL_INDEX)},
@@ -139,7 +139,7 @@ bool YouTubeDataAPI::fetch_channel_videos()
               auto datetime = item["snippet"]["publishedAt"];
 
               info_v.emplace_back(
-                VideoInfo{
+                Video{
                   .channel_id  = item["snippet"]["channelId"],
                   .id          = video_id,
                   .title       = item["snippet"]["title"],
@@ -272,12 +272,12 @@ std::vector<ChannelInfo> YouTubeDataAPI::fetch_youtube_stats()
  * @param video
  * @return std::vector<VideoInfo>
  */
-std::vector<VideoInfo> YouTubeDataAPI::fetch_rival_videos(VideoInfo video)
+std::vector<Video> YouTubeDataAPI::fetch_rival_videos(Video video)
 {
   using namespace constants;
   using json = nlohmann::json;
 
-  std::vector<VideoInfo> info_v{};
+  std::vector<Video> info_v{};
   std::string            id_string{};
   std::string            delim{};
 
@@ -318,7 +318,7 @@ std::vector<VideoInfo> YouTubeDataAPI::fetch_rival_videos(VideoInfo video)
           auto video_id = item["id"]["videoId"];
           auto datetime = item["snippet"]["publishedAt"];
 
-          VideoInfo info{
+          Video info{
               .channel_id  = item["snippet"]["channelId"],
               .id          = video_id,
               .title       = item["snippet"]["title"],
@@ -360,10 +360,10 @@ std::vector<VideoInfo> YouTubeDataAPI::fetch_rival_videos(VideoInfo video)
  * @param   [in]  {VideoInfo}
  * @returns [out] {std::vector<ChannelInfo>}
  */
-std::vector<ChannelInfo> YouTubeDataAPI::find_similar_videos(VideoInfo video)
+std::vector<ChannelInfo> YouTubeDataAPI::find_similar_videos(Video video)
 {
   std::vector<ChannelInfo> channels{};
-  std::vector<VideoInfo>   videos = fetch_rival_videos(video);
+  std::vector<Video>   videos = fetch_rival_videos(video);
 
   auto    it     = std::make_move_iterator(videos.begin());
   auto    it_end = std::make_move_iterator(videos.end());
@@ -404,9 +404,9 @@ std::vector<ChannelInfo> YouTubeDataAPI::find_similar_videos(VideoInfo video)
 /**
  * get_videos
  */
-std::vector<VideoInfo> YouTubeDataAPI::get_videos()
+std::vector<Video> YouTubeDataAPI::get_videos()
 {
-  std::vector<VideoInfo> videos{};
+  std::vector<Video> videos{};
 
   for (const auto& channel : m_channels) {
     videos.insert(
@@ -446,13 +446,13 @@ std::vector<GoogleTrend> YouTubeDataAPI::fetch_google_trends(std::vector<std::st
  * @param terms
  * @return std::vector<VideoInfo>
  */
-std::vector<VideoInfo> YouTubeDataAPI::fetch_videos_by_terms(std::vector<std::string> terms) {
+std::vector<Video> YouTubeDataAPI::fetch_videos_by_terms(std::vector<std::string> terms) {
   using namespace constants;
   using json = nlohmann::json;
 
   const char delimiter{'|'};
 
-  std::vector<VideoInfo> info_v{};
+  std::vector<Video> info_v{};
 
   std::string query = std::accumulate(
     std::next(terms.cbegin()),
@@ -495,7 +495,7 @@ std::vector<VideoInfo> YouTubeDataAPI::fetch_videos_by_terms(std::vector<std::st
           auto video_id = item["id"]["videoId"];
           auto datetime = item["snippet"]["publishedAt"];
 
-          VideoInfo info{
+          Video info{
             .channel_id  = PARAM_VALUES.at(CHAN_KEY_INDEX),
             .id          = video_id,
             .title       = item["snippet"]["title"],
@@ -533,11 +533,11 @@ std::vector<TermInfo> YouTubeDataAPI::fetch_term_info(std::vector<std::string> t
 
   if (m_authenticator.is_authenticated() || m_authenticator.FetchToken())
   {
-    std::vector<VideoInfo> videos = fetch_videos_by_terms(terms);
+    std::vector<Video> videos = fetch_videos_by_terms(terms);
 
     if (!videos.empty()) {
     std::string                                    id_string{};
-    std::vector<VideoInfo>::const_iterator it = videos.cbegin();
+    std::vector<Video>::const_iterator it = videos.cbegin();
 
     id_string.reserve(videos.size() * youtube::YOUTUBE_VIDEO_ID_LENGTH);
     id_string += (*it).id;

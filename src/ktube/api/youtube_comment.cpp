@@ -37,7 +37,7 @@ bool YouTubeDataAPI::PostCommentReply(const Comment& comment)
   using namespace constants;
 
   RequestResponse response{cpr::Post(
-    cpr::Url(URL_VALUES.at(COMMENT_POST_URL_INDEX)),
+    cpr::Url(URL_VALUES.at(COMMENT_REPLY_URL_INDEX)),
     cpr::Header{
       {HEADER_NAMES.at(ACCEPT_HEADER_INDEX), HEADER_VALUES.at(APP_JSON_INDEX)},
       {HEADER_NAMES.at(CONTENT_TYPE_INDEX),  HEADER_VALUES.at(APP_JSON_INDEX)},
@@ -47,6 +47,34 @@ bool YouTubeDataAPI::PostCommentReply(const Comment& comment)
       {PARAM_NAMES.at(PART_INDEX),       PARAM_VALUES.at(SNIPPET_INDEX)}
     },
     cpr::Body{comment.postdata()}
+  )};
+
+  if (response.error)
+  {
+    log("Error response from server:\n" + response.GetError()); // Container will be empty
+    return false;
+  }
+
+  return true;
+}
+
+bool YouTubeDataAPI::PostComment(const Comment& comment)
+{
+  using namespace constants;
+
+  const bool IS_NOT_REPLY{false};
+
+  RequestResponse response{cpr::Post(
+    cpr::Url(URL_VALUES.at(COMMENT_THREADS_URL_INDEX)),
+    cpr::Header{
+      {HEADER_NAMES.at(ACCEPT_HEADER_INDEX), HEADER_VALUES.at(APP_JSON_INDEX)},
+      {HEADER_NAMES.at(CONTENT_TYPE_INDEX),  HEADER_VALUES.at(APP_JSON_INDEX)},
+      {HEADER_NAMES.at(AUTH_HEADER_INDEX),   m_authenticator.get_token()     }
+    },
+    cpr::Parameters{
+      {PARAM_NAMES.at(PART_INDEX),       PARAM_VALUES.at(SNIPPET_INDEX)}
+    },
+    cpr::Body{comment.postdata(IS_NOT_REPLY)}
   )};
 
   if (response.error)

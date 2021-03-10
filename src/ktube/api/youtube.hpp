@@ -40,12 +40,12 @@ public:
   virtual bool                     fetch_channel_videos()                                override;
   virtual std::vector<VideoStats>  fetch_video_stats(std::string id_string)              override;
   virtual std::vector<ChannelInfo> fetch_youtube_stats()                                 override;
-  virtual std::vector<VideoInfo>   fetch_rival_videos(VideoInfo video)                   override;
-  virtual std::vector<ChannelInfo> find_similar_videos(VideoInfo video)                  override;
-          std::vector<VideoInfo>   get_videos();
+  virtual std::vector<Video>       fetch_rival_videos(Video video)                   override;
+  virtual std::vector<ChannelInfo> find_similar_videos(Video video)                  override;
+          std::vector<Video>       get_videos();
   virtual std::vector<GoogleTrend> fetch_google_trends(std::vector<std::string> terms)   override;
   virtual std::vector<TermInfo>    fetch_term_info(std::vector<std::string> terms)       override;
-  virtual std::vector<VideoInfo>   fetch_videos_by_terms(std::vector<std::string> terms) override;
+  virtual std::vector<Video>       fetch_videos_by_terms(std::vector<std::string> terms) override;
 
           const   uint32_t         get_quota_used() const;
   /** Livechat API **/
@@ -77,7 +77,8 @@ public:
  *
  */
 virtual   std::vector<Comment>     FetchVideoComments(const std::string& id) override;
-virtual   bool                     PostCommentReply(const Comment& comment) override;
+virtual   bool                     PostComment(const Comment& comment)       override;
+virtual   bool                     PostCommentReply(const Comment& comment)  override;
 
 protected:
 LiveChatMap  m_chats;
@@ -86,7 +87,7 @@ private:
   bool                IsNewer(const char* datetime);
 
   Authenticator            m_authenticator;
-  std::vector<VideoInfo>   m_videos;
+  std::vector<Video>       m_videos;
   uint32_t                 m_quota;
   std::vector<std::string> m_channel_ids;
   std::vector<ChannelInfo> m_channels;
