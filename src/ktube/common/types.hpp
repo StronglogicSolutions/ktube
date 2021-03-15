@@ -17,6 +17,49 @@ namespace ktube {
   └───────────────────────────────────────────────────────────┘
 */
 
+struct Comment {
+std::string id;
+std::string video_id;
+std::string text;
+std::string name;
+std::string channel;
+uint32_t    likes;
+std::string time;
+// uint32_t totalReplyCount
+// std::string updatedAt ||
+// std::string authorProfileImageUrl
+std::string parent_id;
+
+const std::string postdata(const bool reply = true) const
+{
+  nlohmann::json payload{};
+  payload["snippet"]["videoId"]      = video_id;
+
+  if (reply)
+  {
+    payload["snippet"]["textOriginal"] = text;
+    payload["snippet"]["parentId"]     = parent_id;
+  }
+  else
+    payload["snippet"]["topLevelComment"]["snippet"]["textOriginal"] = text;
+
+  return payload.dump();
+}
+
+friend std::ostream& operator<<(std::ostream& o, const Comment& c)
+{
+  o << "ID: "       << c.id                    << "\n" <<
+       "VIDEO_ID: " << c.video_id              << "\n" <<
+       "TEXT: "     << c.text                  << "\n" <<
+       "NAME: "     << c.name                  << "\n" <<
+       "CHANNEL: "  << c.channel               << "\n" <<
+       "LIKES: "    << std::to_string(c.likes) << "\n" <<
+       "TIME: "     << c.time                  << std::endl;
+
+  return o;
+}
+};
+
 struct FollowerCount {
 std::string name;
 std::string platform;
@@ -56,7 +99,7 @@ double                   keyword_score;
  *
  * TODO: consider wrapping as a class with an ID
  */
-struct VideoInfo {
+struct Video {
 std::string              channel_id;
 std::string              id;
 std::string              title;
@@ -80,7 +123,7 @@ std::vector<std::string> get_primary_keywords() {
     };
 }
 
-friend std::ostream &operator<<(std::ostream& o, const VideoInfo& v) {
+friend std::ostream &operator<<(std::ostream& o, const Video& v) {
   o << "Channel ID:  " << v.channel_id     << "\n" <<
        "Video ID:    " << v.id             << "\n" <<
        "Title:       " << v.title          << "\n" <<
@@ -123,7 +166,7 @@ std::string            created;
 std::string            thumb_url;
 ChannelStats           stats;
 std::string            id;
-std::vector<VideoInfo> videos;
+std::vector<Video> videos;
 
 friend std::ostream &operator<<(std::ostream& o, const ChannelInfo& c) {
   o << "ID:          " << c.id     << "\n" <<

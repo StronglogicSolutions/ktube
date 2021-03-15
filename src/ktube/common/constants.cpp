@@ -16,6 +16,8 @@ const uint8_t VIDEOS_URL_INDEX           = 0x01;
 const uint8_t LIVE_CHAT_URL_INDEX        = 0x02;
 const uint8_t GOOGLE_AUTH_URL_INDEX      = 0x03;
 const uint8_t CHANNELS_URL_INDEX         = 0x04;
+const uint8_t COMMENT_THREADS_URL_INDEX  = 0x05;
+const uint8_t COMMENT_REPLY_URL_INDEX    = 0x06;
 
 // Header Name Indexes
 const uint8_t ACCEPT_HEADER_INDEX        = 0x00;
@@ -32,7 +34,7 @@ const uint8_t CHAN_ID_INDEX              = 0x01;
 const uint8_t EVENT_T_INDEX              = 0x02;
 const uint8_t TYPE_INDEX                 = 0x03;
 const uint8_t KEY_INDEX                  = 0x04;
-const uint8_t ID_INDEX              = 0x05;
+const uint8_t ID_INDEX                   = 0x05;
 const uint8_t LIVE_CHAT_ID_INDEX         = 0x06;
 const uint8_t CLIENT_ID_INDEX            = 0x07;
 const uint8_t CLIENT_SECRET_INDEX        = 0x08;
@@ -41,6 +43,7 @@ const uint8_t GRANT_TYPE_INDEX           = 0x0A;
 const uint8_t ORDER_INDEX                = 0x0B;
 const uint8_t MAX_RESULT_INDEX           = 0x0C;
 const uint8_t QUERY_INDEX                = 0x0D;
+const uint8_t VIDEO_ID_INDEX             = 0x0E;
 
 // Param Value Indexes
 const uint8_t CHAN_KEY_INDEX             = 0x00;
@@ -57,6 +60,7 @@ const uint8_t DATE_VALUE_INDEX           = 0x0A;
 const uint8_t CONTENT_DETAILS_INDEX      = 0x0B;
 const uint8_t VIEW_COUNT_INDEX           = 0x0C;
 const uint8_t SNIPPET_STATS_INDEX        = 0x0D;
+const uint8_t REPLIES_INDEX              = 0x0E;
 
 // Strings
 const std::vector<std::string> URL_VALUES{
@@ -64,7 +68,9 @@ const std::vector<std::string> URL_VALUES{
   "https://www.googleapis.com/youtube/v3/videos",
   "https://www.googleapis.com/youtube/v3/liveChat/messages",
   "https://oauth2.googleapis.com/token",
-  "https://www.googleapis.com/youtube/v3/channels"
+  "https://www.googleapis.com/youtube/v3/channels",
+  "https://www.googleapis.com/youtube/v3/commentThreads",
+  "https://www.googleapis.com/youtube/v3/comments"
 };
 
 const std::vector<std::string> HEADER_NAMES{
@@ -92,7 +98,8 @@ const std::vector<std::string> PARAM_NAMES = {
   "grant_type",
   "order",
   "maxResults",
-  "q"
+  "q",
+  "videoId"
 };
 
 const uint8_t KSTYLEYO_CHANNEL_ID_INDEX             = 0x00;
@@ -130,7 +137,8 @@ const std::vector<std::string> PARAM_VALUES{
   "date",
   "contentDetails",
   "viewCount",
-  "snippet,statistics"
+  "snippet,statistics",
+  "replies"
 };
 
 const std::string E_CHANNEL_ID{"UCFP7BAwQIzqml"};

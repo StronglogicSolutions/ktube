@@ -36,7 +36,7 @@ public:
 
 class VideoStudy {
 public:
-using Videos = std::vector<VideoInfo>;
+using Videos = std::vector<Video>;
 
 struct VideoStudyResult {
 Videos::const_iterator most_likes;
@@ -60,10 +60,10 @@ const Videos::const_iterator top_comment_score() const;
 Videos get_videos();
 
 private:
-double compute_view_score(VideoInfo v);
-double compute_like_score(VideoInfo v);
-double compute_dislike_score(VideoInfo v);
-double compute_comment_score(VideoInfo v);
+double compute_view_score(Video v);
+double compute_like_score(Video v);
+double compute_dislike_score(Video v);
+double compute_comment_score(Video v);
 
 Videos m_videos;
 };
