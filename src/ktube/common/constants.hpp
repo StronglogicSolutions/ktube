@@ -172,12 +172,14 @@ const uint8_t  CHANNEL_LIST_QUOTA_INDEX   = 0x01;
 const uint8_t  COMMENT_LIST_QUOTA_INDEX   = 0x02;
 const uint8_t  SEARCH_LIST_QUOTA_INDEX    = 0x03;
 const uint8_t  COMMENT_INSERT_QUOTA_INDEX = 0x04;
+const uint8_t  COMMENT_REPLY_QUOTA_INDEX  = 0x05;
 
 const std::vector<uint32_t> QUOTA_LIMIT{
   1,
   1,
   1,
   100,
+  50,
   50
 };
 
