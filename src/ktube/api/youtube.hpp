@@ -77,8 +77,8 @@ public:
  *
  */
 virtual   std::vector<Comment>     FetchVideoComments(const std::string& id) override;
-virtual   bool                     PostComment(const Comment& comment)       override;
-virtual   bool                     PostCommentReply(const Comment& comment)  override;
+virtual   std::string              PostComment(const Comment& comment)       override;
+virtual   std::string              PostCommentReply(const Comment& comment)  override;
 
 protected:
 LiveChatMap  m_chats;
