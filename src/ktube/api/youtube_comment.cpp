@@ -52,6 +52,8 @@ std::string YouTubeDataAPI::PostCommentReply(const Comment& comment)
     cpr::Body{comment.postdata()}
   )};
 
+  m_quota += youtube::QUOTA_LIMIT.at(youtube::COMMENT_INSERT_QUOTA_INDEX);
+
   if (response.error)
     log("Error response from server:\n" + response.GetError());
   else
@@ -82,6 +84,8 @@ std::string YouTubeDataAPI::PostComment(const Comment& comment)
     },
     cpr::Body{comment.postdata(IS_NOT_REPLY)}
   )};
+
+  m_quota += youtube::QUOTA_LIMIT.at(youtube::COMMENT_INSERT_QUOTA_INDEX);
 
   if (response.error)
     log("Error response from server:\n" + response.GetError());
