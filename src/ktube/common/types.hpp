@@ -18,6 +18,14 @@ namespace ktube {
 */
 
 struct Comment {
+public:
+static Comment Create(const std::string& comment_text)
+{
+  Comment comment;
+  comment.text = comment_text;
+  return comment;
+}
+
 std::string id;
 std::string video_id;
 std::string text;
@@ -108,6 +116,14 @@ std::string              datetime;
 std::string              time;
 std::string              url;
 VideoStats               stats;
+
+template <typename... T>
+static Video CreateFromTags(T&&... keywords)
+{
+  Video video{};
+  video.stats.keywords = std::vector<std::string>{keywords...};
+  return video;
+}
 
 /**
  * get_primary_keywords
