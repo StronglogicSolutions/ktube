@@ -175,13 +175,13 @@ std::string to_youtube_url(const std::string& id)
             std::string author = item["snippet"]["authorChannelId"];
             std::string time   = item["snippet"]["publishedAt"];
 
-            if (!IsNewer(time.c_str())) { // Ignore duplicates
-              continue; // FIX: This is a bug -> tie is always old -> timezone issues?
-            }
+            // if (!IsNewer(time.c_str())) { // Ignore duplicates
+            //   continue; // FIX: This is a bug -> tie is always old -> timezone issues?
+            // }
 
-            SanitizeJSON(text);
-            SanitizeJSON(author);
-            SanitizeJSON(time);
+            // SanitizeJSON(text);
+            // SanitizeJSON(author);
+            // SanitizeJSON(time);
 
             m_chats.at(m_video_details.chat_id).push_back(
               LiveMessage{
@@ -197,9 +197,9 @@ std::string to_youtube_url(const std::string& id)
           }
         }
 
-        if (!m_chats.at(m_video_details.chat_id).empty()) {
-          m_last_fetch_timestamp = to_unixtime(m_chats.at(m_video_details.chat_id).back().timestamp.c_str());
-        }
+        // if (!m_chats.at(m_video_details.chat_id).empty()) {
+        //   m_last_fetch_timestamp = to_unixtime(m_chats.at(m_video_details.chat_id).back().timestamp.c_str());
+        // }
       }
     }
 
@@ -449,9 +449,9 @@ void YouTubeDataAPI::RecordInteraction(std::string id, Interaction interaction, 
  * HasInteracted
  */
 bool YouTubeDataAPI::HasInteracted(std::string id, Interaction interaction) {
-  if (m_interactions.find(id) == m_interactions.end()) {
+  if (m_interactions.find(id) == m_interactions.end())
     return false;
-  }
+
 
   UserInteraction& user_interaction = m_interactions.at(id);
 

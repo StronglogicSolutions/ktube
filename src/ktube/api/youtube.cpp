@@ -272,19 +272,25 @@ std::vector<ChannelInfo> YouTubeDataAPI::fetch_youtube_stats()
  * @param video
  * @return std::vector<VideoInfo>
  */
-std::vector<Video> YouTubeDataAPI::fetch_rival_videos(Video video)
+std::vector<Video> YouTubeDataAPI::fetch_rival_videos(Video video, uint8_t max_count)
 {
   using namespace constants;
   using json = nlohmann::json;
 
   std::vector<Video> info_v{};
-  std::string            id_string{};
-  std::string            delim{};
+  std::string        id_string{};
+  std::string        delim{};
 
   if (video.stats.keywords.empty()) // Nothing to search
     return info_v;
 
-  auto search_term = video.stats.keywords.front();
+  std::string search_term;
+
+  for (const auto& keyword : video.stats.keywords)
+  {
+    search_term += delim + keyword;
+    delim = '&';
+  }
 
   cpr::Response r = cpr::Get(
     cpr::Url{URL_VALUES.at(SEARCH_URL_INDEX)},
@@ -297,7 +303,7 @@ std::vector<Video> YouTubeDataAPI::fetch_rival_videos(Video video)
       {PARAM_NAMES.at(QUERY_INDEX),      search_term},                       // query term
       {PARAM_NAMES.at(TYPE_INDEX),       PARAM_VALUES.at(VIDEO_TYPE_INDEX)}, // type
       {PARAM_NAMES.at(ORDER_INDEX),      PARAM_VALUES.at(VIEW_COUNT_INDEX)}, // order by
-      {PARAM_NAMES.at(MAX_RESULT_INDEX), std::to_string(5)}                  // limit
+      {PARAM_NAMES.at(MAX_RESULT_INDEX), std::to_string(max_count)}          // limit
     },
     cpr::VerifySsl{m_authenticator.verify_ssl()}
   );
@@ -311,6 +317,7 @@ std::vector<Video> YouTubeDataAPI::fetch_rival_videos(Video video)
     auto items = video_info["items"];
     if (!items.is_null() && items.is_array())
     {
+      delim = "";
       for (const auto &item : items)
       {
         try
@@ -329,7 +336,7 @@ std::vector<Video> YouTubeDataAPI::fetch_rival_videos(Video video)
 
           info_v.push_back(info);
           id_string += delim + video_id.get<std::string>();
-          delim = ",";
+          delim = ',';
         }
         catch (const std::exception &e)
         {

@@ -55,10 +55,6 @@ inline AuthData ParseAuthFromJSON(nlohmann::json json_file) {
   return auth;
 }
 
-static const std::string JSON_EMPTY_OBJECT{
-  "{\"arbitratus\":[1, 2, 3]}"
-};
-
 
 class Authenticator {
 
