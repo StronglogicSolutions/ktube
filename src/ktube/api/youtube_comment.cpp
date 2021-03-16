@@ -23,6 +23,7 @@ std::vector<Comment> YouTubeDataAPI::FetchVideoComments(const std::string& id)
     cpr::Parameters{
       {PARAM_NAMES.at(PART_INDEX),       PARAM_VALUES.at(SNIPPET_INDEX)},
       {PARAM_NAMES.at(VIDEO_ID_INDEX),   id                            },
+      {"order", "relevance"}
     }
   )};
 
@@ -32,9 +33,11 @@ std::vector<Comment> YouTubeDataAPI::FetchVideoComments(const std::string& id)
   return ParseComments(response.json());
 }
 
-bool YouTubeDataAPI::PostCommentReply(const Comment& comment)
+// TODO: Return comment id
+std::string YouTubeDataAPI::PostCommentReply(const Comment& comment)
 {
   using namespace constants;
+  std::string comment_id{};
 
   RequestResponse response{cpr::Post(
     cpr::Url(URL_VALUES.at(COMMENT_REPLY_URL_INDEX)),
@@ -50,19 +53,22 @@ bool YouTubeDataAPI::PostCommentReply(const Comment& comment)
   )};
 
   if (response.error)
+    log("Error response from server:\n" + response.GetError());
+  else
   {
-    log("Error response from server:\n" + response.GetError()); // Container will be empty
-    return false;
+    comment_id = response.json()["id"];
   }
 
-  return true;
+  return comment_id;
 }
 
-bool YouTubeDataAPI::PostComment(const Comment& comment)
+// TODO: Return comment id
+std::string YouTubeDataAPI::PostComment(const Comment& comment)
 {
   using namespace constants;
 
-  const bool IS_NOT_REPLY{false};
+  const bool  IS_NOT_REPLY{false};
+  std::string comment_id{};
 
   RequestResponse response{cpr::Post(
     cpr::Url(URL_VALUES.at(COMMENT_THREADS_URL_INDEX)),
@@ -78,12 +84,13 @@ bool YouTubeDataAPI::PostComment(const Comment& comment)
   )};
 
   if (response.error)
+    log("Error response from server:\n" + response.GetError());
+  else
   {
-    log("Error response from server:\n" + response.GetError()); // Container will be empty
-    return false;
+    comment_id = response.json()["id"];
   }
 
-  return true;
+  return comment_id;
 }
 
 } // namespace ktube
