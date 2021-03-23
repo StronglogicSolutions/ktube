@@ -51,6 +51,9 @@ const std::string postdata(const bool reply = true) const
   else
     payload["snippet"]["topLevelComment"]["snippet"]["textOriginal"] = text;
 
+  if (!channel.empty())
+    payload["snippet"]["channelId"] = channel;
+
   return payload.dump();
 }
 
