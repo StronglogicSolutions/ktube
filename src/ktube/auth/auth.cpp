@@ -87,7 +87,7 @@ bool Authenticator::FetchToken(const bool fetch_fresh_token)
 
   if (!m_auth.token_app_path.empty())
   {
-    if (ProcessResult result = qx({m_auth.token_app_path}); !result.error)
+    if (kiq::ProcessResult result = kiq::qx({m_auth.token_app_path}); !result.error)
     {
       const auto auth_json = json::parse(result.output, nullptr, false);
       if (const auto auth = ParseAuthFromJSON(auth_json); auth.is_valid())

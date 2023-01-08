@@ -4,32 +4,26 @@ namespace ktube {
 /**
  * execute
  */
-ProcessResult execute(std::string program, std::vector<std::string> argv) {
+kiq::ProcessResult execute(std::string program, std::vector<std::string> argv) {
   std::vector<std::string> runtime_arguments{};
   runtime_arguments.reserve(1 + argv.size());
   runtime_arguments.emplace_back(program);
   runtime_arguments.insert(runtime_arguments.end(), argv.begin(), argv.end());
-  return qx(runtime_arguments, get_executable_cwd());
+  return kiq::qx(runtime_arguments, get_executable_cwd());
 }
 
 /**
  * query_google_trends
  */
 std::vector<GoogleTrend> query_google_trends(std::vector<std::string> terms) {
-  std::vector<std::string> argv{};
-  argv.reserve(terms.size());
-
+  std::vector<std::string> argv;
   for (const auto& term : terms) argv.emplace_back(std::string{"-t=" + term});
 
-  ProcessResult result = execute(constants::TRENDS_APP, argv);
-
-  if (result.error) {
+  const kiq::ProcessResult result = execute(constants::TRENDS_APP, argv);
+  if (result.error)
     throw std::runtime_error{"Error executing trends app"};
-  }
 
-  TrendsJSONResult processed{result.output};
-
-  return processed.get_result();
+  return TrendsJSONResult{result.output}.get_result();
 }
 
 /**
