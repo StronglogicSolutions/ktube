@@ -18,9 +18,6 @@ struct AuthData {
 bool is_valid() const;
 };
 
-// bool     ValidateAuthJSON(const nlohmann::json& json_file);
-// AuthData ParseAuthFromJSON(nlohmann::json json_file);
-
 class Authenticator {
 
 public:
