@@ -71,10 +71,6 @@ source_set("ktube_sources") {
     "//src",
   ]
 
-  # libs = [
-  #   "cpr"
-  # ]
-
   sources = [
     "//src/ktube/api/youtube.cpp",
     "//src/ktube/api/youtube_live.cpp",
@@ -94,10 +90,6 @@ executable("ktube") {
     "//src",
     "//third_party/json/include",
   ]
-
-  # libs = [
-  #   "cpr"
-  # ]
 
   sources = [
     "//src/ktube/main.cpp"
