@@ -52,8 +52,8 @@ std::string to_youtube_url(const std::string& id)
         {PARAM_NAMES.at(CHAN_ID_INDEX), PARAM_VALUES.at(CHAN_KEY_INDEX)},
         {PARAM_NAMES.at(EVENT_T_INDEX), PARAM_VALUES.at(LIVE_EVENT_TYPE_INDEX)},
         {PARAM_NAMES.at(TYPE_INDEX),    PARAM_VALUES.at(VIDEO_TYPE_INDEX)}
-      },
-      cpr::VerifySsl{m_authenticator.verify_ssl()}
+      }//,
+      // cpr::VerifySsl{m_authenticator.verify_ssl()}
     );
 
     json video_info = json::parse(r.text);
@@ -113,8 +113,8 @@ std::string to_youtube_url(const std::string& id)
         {PARAM_NAMES.at(PART_INDEX),    PARAM_VALUES.at(LIVESTREAM_DETAILS_INDEX)},
         {PARAM_NAMES.at(KEY_INDEX),     m_authenticator.get_key()},
         {PARAM_NAMES.at(ID_INDEX),      m_video_details.id}
-      },
-      cpr::VerifySsl{m_authenticator.verify_ssl()}
+      }//,
+      // cpr::VerifySsl{m_authenticator.verify_ssl()}
     );
 
     json live_info = json::parse(r.text);
@@ -153,8 +153,8 @@ std::string to_youtube_url(const std::string& id)
         {PARAM_NAMES.at(PART_INDEX),           PARAM_VALUES.at(SNIPPET_INDEX)},
         {PARAM_NAMES.at(KEY_INDEX),            m_authenticator.get_key()},
         {PARAM_NAMES.at(LIVE_CHAT_ID_INDEX),   m_video_details.chat_id},
-      },
-      cpr::VerifySsl{m_authenticator.verify_ssl()}
+      }//,
+      // cpr::VerifySsl{m_authenticator.verify_ssl()}
     );
 
     json chat_info = json::parse(r.text);
@@ -378,8 +378,8 @@ std::string to_youtube_url(const std::string& id)
         {PARAM_NAMES.at(KEY_INDEX),            m_authenticator.get_key()},
         {PARAM_NAMES.at(LIVE_CHAT_ID_INDEX),   m_video_details.chat_id},
       },
-      cpr::Body{payload.dump()},
-      cpr::VerifySsl{m_authenticator.verify_ssl()}
+      cpr::Body{payload.dump()}//,
+      // cpr::VerifySsl{m_authenticator.verify_ssl()}
     );
 
     return r.status_code < 400;

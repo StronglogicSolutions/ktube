@@ -5,10 +5,7 @@
 config("compiler_defaults") {
   if (current_os == "linux") {
     cflags = [
-      "-fPIC",
-      "-pthread",
-      "-lcpr",
-      "-g",
+      "-fPIC"
     ]
 
     cflags_cc = [

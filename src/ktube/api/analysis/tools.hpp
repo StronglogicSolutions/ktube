@@ -12,7 +12,7 @@ namespace ktube {
   │░░░░░░░░░░░░░░░░░░░░░░░░░░░ Helpers ░░░░░░░░░░░░░░░░░░░░░░░│
   └───────────────────────────────────────────────────────────┘
 */
-ProcessResult execute(std::string program, std::vector<std::string> argv = {});
+kiq::ProcessResult execute(std::string program, std::vector<std::string> argv = {});
 
 std::vector<GoogleTrend> query_google_trends(std::vector<std::string> terms);
 

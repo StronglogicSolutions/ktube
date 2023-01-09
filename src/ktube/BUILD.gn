@@ -15,6 +15,9 @@ config("cpr") {
   include_dirs = [
     "//third_party/cpr/include"
   ]
+  libs = [
+    "//third_party/cpr/build/lib/libcpr.so",
+  ]
 }
 
 config("knlp") {
@@ -68,18 +71,13 @@ source_set("ktube_sources") {
     "//src",
   ]
 
-  libs = [
-    "crypto",
-    "cpr",
-    "curl",
-  ]
-
   sources = [
     "//src/ktube/api/youtube.cpp",
     "//src/ktube/api/youtube_live.cpp",
     "//src/ktube/api/youtube_comment.cpp",
     "//src/ktube/common/constants.cpp",
-    "//src/ktube/api/analysis/tools.cpp"
+    "//src/ktube/api/analysis/tools.cpp",
+    "//src/ktube/auth/auth.cpp"
   ]
 }
 
@@ -91,13 +89,6 @@ executable("ktube") {
   include_dirs = [
     "//src",
     "//third_party/json/include",
-  ]
-
-  libs = [
-    "pthread",
-    "crypto",
-    "cpr",
-    "curl"
   ]
 
   sources = [
@@ -116,9 +107,6 @@ shared_library("ktube_lib") {
   ]
 
   libs = [
-    "pthread",
-    "crypto",
-    "cpr",
-    "curl"
+    "cpr"
   ]
 }
