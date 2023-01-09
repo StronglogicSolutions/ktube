@@ -112,16 +112,27 @@ bool Authenticator::refresh_access_token()
   using namespace constants;
   using json = nlohmann::json;
 
-  cpr::Response response = cpr::Post(
-    cpr::Url{URL_VALUES.at(GOOGLE_AUTH_URL_INDEX)},
-    cpr::Header{
-      {HEADER_NAMES.at(CONTENT_TYPE_INDEX), HEADER_VALUES.at(FORM_URL_ENC_INDEX)}
-    },
-    cpr::Body{
-      PARAM_NAMES.at(CLIENT_ID_INDEX)          + "=" + m_auth.client_id + "&" +
-      PARAM_NAMES.at(CLIENT_SECRET_INDEX)      + "=" + m_auth.client_secret + "&" +
-      PARAM_NAMES.at(REFRESH_TOKEN_NAME_INDEX) + "=" + m_auth.refresh_token + "&" +
-      PARAM_NAMES.at(GRANT_TYPE_INDEX)         + "=" + PARAM_VALUES.at(REFRESH_TOKEN_VALUE_INDEX)});
+  cpr::Response response;
+
+  try
+  {
+    response = cpr::Post(
+      cpr::Url{URL_VALUES.at(GOOGLE_AUTH_URL_INDEX)},
+      cpr::Header{
+        {HEADER_NAMES.at(CONTENT_TYPE_INDEX), HEADER_VALUES.at(FORM_URL_ENC_INDEX)}
+      },
+      cpr::VerifySsl(m_verify_ssl),
+      cpr::Body{
+        PARAM_NAMES.at(CLIENT_ID_INDEX)          + "=" + m_auth.client_id + "&" +
+        PARAM_NAMES.at(CLIENT_SECRET_INDEX)      + "=" + m_auth.client_secret + "&" +
+        PARAM_NAMES.at(REFRESH_TOKEN_NAME_INDEX) + "=" + m_auth.refresh_token + "&" +
+        PARAM_NAMES.at(GRANT_TYPE_INDEX)         + "=" + PARAM_VALUES.at(REFRESH_TOKEN_VALUE_INDEX)});
+  }
+  catch (const std::exception& e)
+  {
+    ktube::log("Exception thrown while fetching refresh token:");
+    ktube::log(e.what());
+  }
 
   if (response.error.code != cpr::ErrorCode::OK)
   {
