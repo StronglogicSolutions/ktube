@@ -134,7 +134,7 @@ bool Authenticator::refresh_access_token()
     ktube::log(e.what());
   }
 
-  if (response.error.code != cpr::ErrorCode::OK)
+  if (response.error.code == cpr::ErrorCode::OK)
   {
     auto     auth_json = json::parse(response.text);
     if (const auto auth = ParseAuthFromJSON(auth_json); auth.is_valid())
