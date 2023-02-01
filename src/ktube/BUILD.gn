@@ -11,13 +11,14 @@ config("html") {
   ]
 }
 
-config("cpr") {
-  include_dirs = [
-    "//third_party/cpr/include"
-  ]
-  libs = [
-    "//third_party/cpr/build/lib/libcpr.so",
-  ]
+config("cpr_library") {
+  include_dirs = [cpr_include]
+  libs = ["cpr"]
+  visibility = [ ":cpr_lib" ]
+}
+
+group ("cpr_lib") {
+  public_configs = [":cpr_library"]
 }
 
 config("knlp") {
@@ -58,9 +59,10 @@ source_set("ktube_sources") {
     ":knlp_sources"
   ]
 
+  public_deps = [":cpr_lib"]
+
   public_configs = [
     ":inih",
-    ":cpr",
     ":kjson",
     ":html",
     ":knlp",
@@ -104,9 +106,5 @@ shared_library("ktube_lib") {
   include_dirs = [
     "//src",
     "//third_party/json/include",
-  ]
-
-  libs = [
-    "cpr"
   ]
 }
