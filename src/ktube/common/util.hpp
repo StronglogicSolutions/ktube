@@ -217,19 +217,19 @@ inline std::string get_simple_datetime() {
 inline std::string human_readable_duration(std::chrono::duration<int64_t> delta) {
   using namespace std;
   using namespace std::chrono;
-  using days = duration<int, ratio<86400>>;
+  using days = std::chrono::duration<int, ratio<86400>>;
 
   std::stringstream ss{};
 
   char fill = ss.fill();
   ss.fill('0');
-  auto d = duration_cast<days>(delta);
+  auto d = std::chrono::duration_cast<days>(delta);
   delta -= d;
-  auto h = duration_cast<hours>(delta);
+  auto h = std::chrono::duration_cast<hours>(delta);
   delta -= h;
-  auto m = duration_cast<minutes>(delta);
+  auto m = std::chrono::duration_cast<minutes>(delta);
   delta -= m;
-  auto s = duration_cast<seconds>(delta);
+  auto s = std::chrono::duration_cast<seconds>(delta);
 
   ss  << setw(2) << d.count() << "d:"
       << setw(2) << h.count() << "h:"
